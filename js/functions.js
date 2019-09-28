@@ -3,8 +3,9 @@
 $(document).ready(function(){
 /* global $  */
 /* global _ */
+/* global loacalStorage*/
 var score = 0; 
-var attempts = 0 ; 
+var attempts = localStorage.getItem("quizAttempts"); //first use assigns value of zero 
 //Event Listeners
 //"Submit Quiz" button 
 $("button").on("click", gradeQuiz);
@@ -64,14 +65,16 @@ function gradeQuiz()
 	    return;
 	 }
 	  
-	 attempts++;
+	 attempts++;//increase attempt count
+	 localStorage.setItem("quizAttempts", attempts); //passes the increased variable into stoarage
 
     //variables
     score = 0;
     let q1Response = $("#q1").val().toLowerCase();//user response stored here in lowercase
     let q2Response = $("#q2").val();
     let q4Response = $("input[name=q4]:checked").val();
-
+    let q6Response = $("#q6").val().toLowerCase();//user response stored here in lowercase
+    let q7Response = $("#q7").val();
     //Question ---------------------
     if(q1Response == "sacramento") 
     {rightAnswer(1);}
@@ -100,16 +103,33 @@ function gradeQuiz()
     {wrongAnswer(5);}
     
     //question 6
-    
+    if(q6Response == "California Poppy") 
+    {rightAnswer2(6);}
+    else 
+    {wrongAnswer(6);}
     //question 7
-    
+    if(q7Response == "ya")
+    { rightAnswer2(7);}
+    else 
+    {wrongAnswer(7);}//end question 2
     //question 8
+    if( $("#40").is(":checked"))
+    {rightAnswer2(8);}
+    else
+    {wrongAnswer(8);}//end question3 
     
-    
-    
+    if(score > 80)
+    {
+        $("#passFail").html(`You passed! `); 
+    }
+    if(score < 50)
+    {
+        $("#passFail").html(`You failed! `); 
+    }
 
 	$("#totalScore").html(`Total Score: ${score}`);    //string literal displays score w/ backticks or plus symbol         
     $("#attempts").html(`Total attempts: ${attempts}`);
+    
 } //gradeQuiz
 
 
